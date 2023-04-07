@@ -2,7 +2,7 @@ import random
 '''
 Determinar en los meses de abril, mayo y junio el promedio de lluvias del mes, teniendo en cuenta los centimetros de lluvia caidos por dia (los valores de los cms de lluvia por dia pueden ser generados por medio de un numero aleatorio entre 0 y 11) y determinar cual fue el mes mas lluvioso en promedio
 '''
-
+print('prueba repositorio')
 
 abril = []
 mayo = []
