@@ -3,6 +3,9 @@ import os
 
 cont = 0
 id = 1
+pathEstu = './ejerciciosPractica/Ejercicio notas/json/dicEstudiantes.json'
+pathMate = './ejerciciosPractica/Ejercicio notas/json/dicMaterias.json'
+pathNota = './ejerciciosPractica/Ejercicio notas/json/dicNotas.json'
 arregloEliminar = []
 dicEstudiante = {
     '1':{
@@ -52,29 +55,29 @@ for materia in dicMaterias:
             id +=1
 
 try:
-    with open('./json/dicEstudiantes.json','r') as archivo:
+    with open(pathEstu,'r') as archivo:
         pruebaEs = json.load(archivo)
     archivo.close()
 except FileNotFoundError:
-    with open('./json/dicEstudiantes.json','w') as archivo:
+    with open(pathEstu,'w') as archivo:
         json.dump(dicEstudiante,archivo)
     archivo.close()
 
 try:
-    with open('./json/dicMaterias.json','r') as archivo:
+    with open(pathMate,'r') as archivo:
         pruebaMa = json.load(archivo)
     archivo.close()
 except FileNotFoundError:
-    with open('./json/dicMaterias.json','w') as archivo:
+    with open(pathMate,'w') as archivo:
         json.dump(dicMaterias,archivo)
     archivo.close()
 
 try:
-    with open('./json/dicNotas.json','r') as archivo:
+    with open(pathNota,'r') as archivo:
         pruebaNota = json.load(archivo)
     archivo.close()
 except FileNotFoundError:
-    with open('./json/dicNotas.json','w') as archivo:
+    with open(pathNota,'w') as archivo:
         json.dump(dicNotas,archivo)
     archivo.close()
 
@@ -94,7 +97,7 @@ def generarID(diccionario):
     return id
 
 def verMaterias():
-    with open('./json/dicMaterias.json','r') as archivo:
+    with open(pathMate,'r') as archivo:
         verMaterias = json.load(archivo)
     archivo.close()
     print('CODIG0\t\t MATERIA')
@@ -107,7 +110,7 @@ def verMenuEstudiantes():
     print('Seleccione:\n1.Ver estudiantes\n2.Agregar\n3.Editar\n4.Eliminar\n0.Salir')
 
 def verEstudiantes():
-    with open('./json/dicEstudiantes.json','r') as archivo:
+    with open(pathEstu,'r') as archivo:
         verEstudiantes = json.load(archivo)
     archivo.close()
     print('CODIGO\t\t NOMBRE\t\t APELLIDO\t\t CORREO')
@@ -125,10 +128,10 @@ def editarEstudiantes(itemCambio):
     id = input('Ingrese el id del estudiante ')
     print('Ingrese el nuevo',itemCambio)
     nuevoValor = input()
-    with open('./json/dicEstudiantes.json','r') as archivo:
+    with open(pathEstu,'r') as archivo:
         agregarEstudiantes = json.load(archivo)
     archivo.close()
-    with open('./json/dicEstudiantes.json','w') as archivo:
+    with open(pathEstu,'w') as archivo:
         agregarEstudiantes[id][itemCambio] = nuevoValor
         json.dump(agregarEstudiantes,archivo)
     archivo.close()
@@ -144,13 +147,13 @@ def verNotaMateria():
     verMaterias()
     id = input('Ingrese el codigo de la materia ')
     os.system('clear')
-    with open('./json/dicMaterias.json','r') as archivo:
+    with open(pathMate,'r') as archivo:
         verMate = json.load(archivo)
     archivo.close()
-    with open('./json/dicEstudiantes.json','r') as archivo:
+    with open(pathEstu,'r') as archivo:
         verEstu = json.load(archivo)
     archivo.close()
-    with open('./json/dicNotas.json','r') as archivo:
+    with open(pathNota,'r') as archivo:
         verNotas = json.load(archivo)
     archivo.close()
 
@@ -166,13 +169,13 @@ def verNotaEstu():
     verEstudiantes()
     id = input('Ingrese el codigo del estudiante ')
     os.system('clear')
-    with open('./json/dicMaterias.json','r') as archivo:
+    with open(pathMate,'r') as archivo:
         verMate = json.load(archivo)
     archivo.close()
-    with open('./json/dicEstudiantes.json','r') as archivo:
+    with open(pathEstu,'r') as archivo:
         verEstu = json.load(archivo)
     archivo.close()
-    with open('./json/dicNotas.json','r') as archivo:
+    with open(pathNota,'r') as archivo:
         verNotas = json.load(archivo)
     archivo.close()
 
@@ -185,7 +188,7 @@ def verNotaEstu():
 
 def editarNotas(id,leerNotas,nota):
     n = float(input('Ingrese la nota '))
-    with open('./json/dicNotas.json','w') as archivo:
+    with open(pathNota,'w') as archivo:
         leerNotas[id][nota] = n
         json.dump(leerNotas,archivo)
     archivo.close()
@@ -216,16 +219,16 @@ while menu != '0':
             print('*********************AGREGAR NOTAS*********************')
             verMaterias()
             id = input('Seleccione la materia ')
-            with open('./json/dicNotas.json','r') as archivo:
+            with open(pathNota,'r') as archivo:
                 leerNotas = json.load(archivo)
             archivo.close()
-            with open('./json/dicMaterias.json','r') as archivo:
+            with open(pathMate,'r') as archivo:
                 leerMaterias = json.load(archivo)
             archivo.close()
-            with open('./json/dicEstudiantes.json','r') as archivo:
+            with open(pathEstu,'r') as archivo:
                 leerEstudiantes = json.load(archivo)
             archivo.close()
-            with open('./json/dicNotas.json','w') as archivo:
+            with open(pathNota,'w') as archivo:
                 for nota in leerNotas:
                     if leerNotas[nota]['idMateria'] == id:
                         if leerNotas[nota]['nota3'] != 'p':
@@ -260,7 +263,7 @@ while menu != '0':
             print('*********************EDITAR NOTAS*********************')
             verNotaMateria()
             id = input('\nSeleccione el estudiante del que desea editar las notas ')
-            with open('./json/dicNotas.json','r') as archivo:
+            with open(pathNota,'r') as archivo:
                 leerNotas = json.load(archivo)
             archivo.close()
             if leerNotas[id]['notaFinal'] =='p':
@@ -283,10 +286,10 @@ while menu != '0':
             print('Seleccione\n1.Eliminar registro de notas\n2.Salir')
             op = input()
             if op == '1':
-                with open('./json/dicNotas.json','r') as archivo:
+                with open(pathNota,'r') as archivo:
                     leerNotas = json.load(archivo)
                 archivo.close()
-                with open('./json/dicNotas.json','w') as archivo:
+                with open(pathNota,'w') as archivo:
                     for nota in leerNotas:
                         leerNotas[nota]['nota1'] = 'p'
                         leerNotas[nota]['nota2'] = 'p'
@@ -314,26 +317,26 @@ while menu != '0':
                 nombre = input('Ingrese el nombre ')
                 apellido = input('Ingrese el apellido ')
                 correo = input('Ingrese el correo ')
-                with open('./json/dicEstudiantes.json','r') as archivo:
+                with open(pathEstu,'r') as archivo:
                     agregarEstudiantes = json.load(archivo)
                 archivo.close()
                 id = generarID(agregarEstudiantes)
-                with open('./json/dicEstudiantes.json','w') as archivo:
+                with open(pathEstu,'w') as archivo:
                     agregarEstudiantes[id]={'nombre': nombre, 'apellido': apellido, 'correo': correo}   
                     json.dump(agregarEstudiantes,archivo)
                 archivo.close()
 
-                with open('./json/dicEstudiantes.json','r') as archivo:
+                with open(pathEstu,'r') as archivo:
                     leerEstudiantes = json.load(archivo)
                 archivo.close()
-                with open('./json/dicMaterias.json','r') as archivo:
+                with open(pathMate,'r') as archivo:
                     leerMaterias = json.load(archivo)
                 archivo.close()
-                with open('./json/dicNotas.json','r') as archivo:
+                with open(pathNota,'r') as archivo:
                     leerNotas = json.load(archivo)
                 archivo.close()
                 idN = int(generarID(leerNotas))
-                with open('./json/dicNotas.json','w') as archivo:
+                with open(pathNota,'w') as archivo:
                     for materia in leerMaterias:
                         cont = 0
                         for nota in leerNotas:
@@ -376,20 +379,20 @@ while menu != '0':
                 verEstudiantes()
                 id = input('Ingrese el id del estudiante ')
 
-                with open('./json/dicEstudiantes.json','r') as archivo:
+                with open(pathEstu,'r') as archivo:
                     eliminarEstudiante = json.load(archivo)
                 archivo.close()
-                with open('./json/dicEstudiantes.json', 'w') as archivo:
+                with open(pathEstu, 'w') as archivo:
                     del(eliminarEstudiante[id])
                     json.dump(eliminarEstudiante,archivo)
                 archivo.close()
-                with open('./json/dicNotas.json','r') as archivo:
+                with open(pathNota,'r') as archivo:
                     eliminarEstudianteNotas = json.load(archivo)
                 archivo.close()
                 for estudiante in eliminarEstudianteNotas:
                     if eliminarEstudianteNotas[estudiante]['idEstudiante'] == id:
                         arregloEliminar.append(estudiante)
-                with open('./json/dicNotas.json', 'w') as archivo:
+                with open(pathNota, 'w') as archivo:
                     for registro in arregloEliminar:
                         del(eliminarEstudianteNotas[registro])
                     json.dump(eliminarEstudianteNotas,archivo)
@@ -419,26 +422,26 @@ while menu != '0':
 
                 nombre = input('\nIngrese el nombre de la materia ')
 
-                with open('./json/dicMaterias.json','r') as archivo:
+                with open(pathMate,'r') as archivo:
                     agregarMaterias = json.load(archivo)
                 archivo.close()
-                with open('./json/dicMaterias.json','w') as archivo:
+                with open(pathMate,'w') as archivo:
                     id = generarID(agregarMaterias)
                     agregarMaterias[id] = {'nombre' : nombre}
                     json.dump(agregarMaterias,archivo)
                 archivo.close()
-                with open('./json/dicEstudiantes.json','r') as archivo:
+                with open(pathEstu,'r') as archivo:
                     leerEstudiantes = json.load(archivo)
                 archivo.close()
-                with open('./json/dicMaterias.json','r') as archivo:
+                with open(pathMate,'r') as archivo:
                     leerMaterias = json.load(archivo)
                 archivo.close()
-                with open('./json/dicNotas.json','r') as archivo:
+                with open(pathNota,'r') as archivo:
                     leerNotas = json.load(archivo)
                 archivo.close()
                 id = int(generarID(leerNotas))
                 idM = int(generarID(leerMaterias)) -1
-                with open('./json/dicNotas.json','w') as archivo:
+                with open(pathNota,'w') as archivo:
                     for estudiante in leerEstudiantes:
                         leerNotas[str(id)] = {
                             'idEstudiante':estudiante,
@@ -462,10 +465,10 @@ while menu != '0':
                 id = input('Ingrese el id de la materia que desea editar ')
                 nombre = input('\nIngrese el nombre de la materia ')
 
-                with open('./json/dicMaterias.json','r') as archivo:
+                with open(pathMate,'r') as archivo:
                     editarMaterias = json.load(archivo)
                 archivo.close()
-                with open('./json/dicMaterias.json','w') as archivo:
+                with open(pathMate,'w') as archivo:
                     for materia in editarMaterias:
                         if materia == id:
                             editarMaterias[materia]['nombre'] = nombre
@@ -480,7 +483,7 @@ while menu != '0':
 
                 id = input('Ingrese el id de la materia que desea eliminar ')
 
-                with open('./json/dicNotas.json','r') as archivo:
+                with open(pathNota,'r') as archivo:
                     notas = json.load(archivo)
                 archivo.close()
 
@@ -489,19 +492,19 @@ while menu != '0':
                         cont += 1  
 
                 if cont == 0:
-                    with open('./json/dicMaterias.json','r') as archivo:
+                    with open(pathMate,'r') as archivo:
                         eliminarMaterias = json.load(archivo)
                     archivo.close()
                     for nota in notas:
                         if notas[nota]['idMateria'] == id :
                             arregloEliminar.append(nota)
-                    with open('./json/dicNotas.json','w') as archivo:
+                    with open(pathNota,'w') as archivo:
                         for materia in arregloEliminar:
                             del(notas[materia])
                         json.dump(notas,archivo)
                     archivo.close()
                         
-                    with open('./json/dicMaterias.json','w') as archivo:
+                    with open(pathMate,'w') as archivo:
                         del(eliminarMaterias[id])
                         json.dump(eliminarMaterias,archivo)
                     archivo.close()
