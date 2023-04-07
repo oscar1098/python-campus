@@ -54,33 +54,25 @@ for materia in dicMaterias:
             }
             id +=1
 
-try:
+
+
+def leerDicEstu():
     with open(pathEstu,'r') as archivo:
-        pruebaEs = json.load(archivo)
+        leerDicEstu = json.load(archivo)
     archivo.close()
-except FileNotFoundError:
-    with open(pathEstu,'w') as archivo:
-        json.dump(dicEstudiante,archivo)
-    archivo.close()
+    return leerDicEstu
 
-try:
+def leerDicMate():
     with open(pathMate,'r') as archivo:
-        pruebaMa = json.load(archivo)
+        leerdicMate = json.load(archivo)
     archivo.close()
-except FileNotFoundError:
-    with open(pathMate,'w') as archivo:
-        json.dump(dicMaterias,archivo)
-    archivo.close()
+    return leerdicMate
 
-try:
+def leerDicNota():
     with open(pathNota,'r') as archivo:
-        pruebaNota = json.load(archivo)
+        dicNota = json.load(archivo)
     archivo.close()
-except FileNotFoundError:
-    with open(pathNota,'w') as archivo:
-        json.dump(dicNotas,archivo)
-    archivo.close()
-
+    return dicNota
 
 def verMenu():
     os.system('clear')
@@ -97,12 +89,10 @@ def generarID(diccionario):
     return id
 
 def verMaterias():
-    with open(pathMate,'r') as archivo:
-        verMaterias = json.load(archivo)
-    archivo.close()
+    dicMate = leerDicMate()
     print('CODIG0\t\t MATERIA')
-    for materia in verMaterias:
-        print(materia,'\t\t',verMaterias[materia]['nombre'])
+    for materia in dicMate:
+        print(materia,'\t\t',dicMate[materia]['nombre'])
 
 def verMenuEstudiantes():
     os.system('clear')
@@ -110,12 +100,10 @@ def verMenuEstudiantes():
     print('Seleccione:\n1.Ver estudiantes\n2.Agregar\n3.Editar\n4.Eliminar\n0.Salir')
 
 def verEstudiantes():
-    with open(pathEstu,'r') as archivo:
-        verEstudiantes = json.load(archivo)
-    archivo.close()
+    dicEstu = leerDicEstu()
     print('CODIGO\t\t NOMBRE\t\t APELLIDO\t\t CORREO')
-    for estudiante in verEstudiantes:
-        print(estudiante,'\t\t',verEstudiantes[estudiante]['nombre'],'\t\t',verEstudiantes[estudiante]['apellido'],'\t\t',verEstudiantes[estudiante]['correo'])
+    for estudiante in dicEstu:
+        print(estudiante,'\t\t',dicEstu[estudiante]['nombre'],'\t\t',dicEstu[estudiante]['apellido'],'\t\t',dicEstu[estudiante]['correo'])
 
 def menuEditarEstudiante():
     os.system('clear')
@@ -128,12 +116,10 @@ def editarEstudiantes(itemCambio):
     id = input('Ingrese el id del estudiante ')
     print('Ingrese el nuevo',itemCambio)
     nuevoValor = input()
-    with open(pathEstu,'r') as archivo:
-        agregarEstudiantes = json.load(archivo)
-    archivo.close()
+    dicEstu = leerDicEstu()
     with open(pathEstu,'w') as archivo:
-        agregarEstudiantes[id][itemCambio] = nuevoValor
-        json.dump(agregarEstudiantes,archivo)
+        dicEstu[id][itemCambio] = nuevoValor
+        json.dump(dicEstu,archivo)
     archivo.close()
     input()
 
@@ -147,50 +133,66 @@ def verNotaMateria():
     verMaterias()
     id = input('Ingrese el codigo de la materia ')
     os.system('clear')
-    with open(pathMate,'r') as archivo:
-        verMate = json.load(archivo)
-    archivo.close()
-    with open(pathEstu,'r') as archivo:
-        verEstu = json.load(archivo)
-    archivo.close()
-    with open(pathNota,'r') as archivo:
-        verNotas = json.load(archivo)
-    archivo.close()
+    dicMate = leerDicMate()
+    dicEstu = leerDicEstu()
+    dicNota = leerDicNota()
 
-    print('Notas de los estudiantes en la materia',verMate[id]['nombre'])
+    print('Notas de los estudiantes en la materia',dicMate[id]['nombre'])
     print('CODIGO\t\t NOMBRE\t\t NOTA 1\t\t NOTA 2\t\t NOTA 3\t\t NOTA FINAL\t\t')
-    for nota in verNotas:
-        if verNotas[nota]['idMateria'] == id:
-            idEs = verNotas[nota]['idEstudiante']
-            print(nota,'\t\t',verEstu[idEs]['nombre'],'\t\t',verNotas[nota]['nota1'],'\t\t',verNotas[nota]['nota2'],'\t\t',verNotas[nota]['nota3'],'\t\t',verNotas[nota]['notaFinal'])
+    for nota in dicNota:
+        if dicNota[nota]['idMateria'] == id:
+            idEs = dicNota[nota]['idEstudiante']
+            print(nota,'\t\t',dicEstu[idEs]['nombre'],'\t\t',dicNota[nota]['nota1'],'\t\t',dicNota[nota]['nota2'],'\t\t',dicNota[nota]['nota3'],'\t\t',dicNota[nota]['notaFinal'])
 
 def verNotaEstu():
     os.system('clear')
     verEstudiantes()
     id = input('Ingrese el codigo del estudiante ')
     os.system('clear')
-    with open(pathMate,'r') as archivo:
-        verMate = json.load(archivo)
-    archivo.close()
-    with open(pathEstu,'r') as archivo:
-        verEstu = json.load(archivo)
-    archivo.close()
-    with open(pathNota,'r') as archivo:
-        verNotas = json.load(archivo)
-    archivo.close()
-
-    print('Notas de las materias del estudiante',verEstu[id]['nombre'])
+    dicMate = leerDicMate()
+    dicEstu = leerDicEstu()
+    dicNotas = leerDicNota()
+    
+    print('Notas de las materias del estudiante',dicEstu[id]['nombre'])
     print('CODIGO\t\t MATERIA\t\t NOTA 1\t\t NOTA 2\t\t NOTA 3\t\t NOTA FINAL\t\t')
-    for nota in verNotas:
-        if verNotas[nota]['idEstudiante'] == id:
-            idMa = verNotas[nota]['idMateria']
-            print(nota,'\t\t',verMate[idMa]['nombre'],'\t\t',verNotas[nota]['nota1'],'\t\t',verNotas[nota]['nota2'],'\t\t',verNotas[nota]['nota3'],'\t\t',verNotas[nota]['notaFinal'])
+    for nota in dicNotas:
+        if dicNotas[nota]['idEstudiante'] == id:
+            idMa = dicNotas[nota]['idMateria']
+            print(nota,'\t\t',dicMate[idMa]['nombre'],'\t\t',dicNotas[nota]['nota1'],'\t\t',dicNotas[nota]['nota2'],'\t\t',dicNotas[nota]['nota3'],'\t\t',dicNotas[nota]['notaFinal'])
 
 def editarNotas(id,leerNotas,nota):
     n = float(input('Ingrese la nota '))
     with open(pathNota,'w') as archivo:
         leerNotas[id][nota] = n
         json.dump(leerNotas,archivo)
+    archivo.close()
+
+def agregarNotas(dicNotas,nota,dicEstu,dicMate,id,notatext):
+    idEs = dicNotas[nota]['idEstudiante']
+    print('Ingrese la', notatext, ' del estudiante',dicEstu[idEs]['nombre'],'en la materia',dicMate[id]['nombre'])
+    nota3 = float(input())
+    dicNotas[nota][notatext] = nota3
+    return dicNotas
+
+try:
+    leerDicEstu()
+except FileNotFoundError:
+    with open(pathEstu,'w') as archivo:
+        json.dump(dicEstudiante,archivo)
+    archivo.close()
+
+try:
+    leerDicMate()
+except FileNotFoundError:
+    with open(pathMate,'w') as archivo:
+        json.dump(dicMaterias,archivo)
+    archivo.close()
+
+try:
+    leerDicNota()
+except FileNotFoundError:
+    with open(pathNota,'w') as archivo:
+        json.dump(dicNotas,archivo)
     archivo.close()
 
 verMenu()
@@ -219,43 +221,29 @@ while menu != '0':
             print('*********************AGREGAR NOTAS*********************')
             verMaterias()
             id = input('Seleccione la materia ')
-            with open(pathNota,'r') as archivo:
-                leerNotas = json.load(archivo)
-            archivo.close()
-            with open(pathMate,'r') as archivo:
-                leerMaterias = json.load(archivo)
-            archivo.close()
-            with open(pathEstu,'r') as archivo:
-                leerEstudiantes = json.load(archivo)
-            archivo.close()
+            dicNotas = leerDicNota()
+            dicMate = leerDicMate()
+            dicEstu = leerDicEstu()           
+            
             with open(pathNota,'w') as archivo:
-                for nota in leerNotas:
-                    if leerNotas[nota]['idMateria'] == id:
-                        if leerNotas[nota]['nota3'] != 'p':
-                            idEs = leerNotas[nota]['idEstudiante']
-                            print('Calculando la nota final del estudiante',leerEstudiantes[idEs]['nombre'],'en la materia',leerMaterias[id]['nombre'])
-                            nota3 = leerNotas[nota]['nota3']
-                            nota2 = leerNotas[nota]['nota2']
-                            nota1 = leerNotas[nota]['nota1']
+                for nota in dicNotas:
+                    if dicNotas[nota]['idMateria'] == id:
+                        if dicNotas[nota]['nota3'] != 'p':
+                            idEs = dicNotas[nota]['idEstudiante']
+                            print('Calculando la nota final del estudiante',dicEstu[idEs]['nombre'],'en la materia',dicMate[id]['nombre'])
+                            nota3 = dicNotas[nota]['nota3']
+                            nota2 = dicNotas[nota]['nota2']
+                            nota1 = dicNotas[nota]['nota1']
                             notaFinal = nota1*0.3 + nota2*0.3 + nota3*0.4
-                            leerNotas[nota]['notaFinal'] = round(notaFinal,2)
+                            dicNotas[nota]['notaFinal'] = round(notaFinal,2)
                             input()
-                        elif leerNotas[nota]['nota2'] != 'p':
-                            idEs = leerNotas[nota]['idEstudiante']
-                            print('Ingrese la nota 3 del estudiante',leerEstudiantes[idEs]['nombre'],'en la materia',leerMaterias[id]['nombre'])
-                            nota3 = float(input())
-                            leerNotas[nota]['nota3'] = nota3
-                        elif leerNotas[nota]['nota1'] != 'p':
-                            idEs = leerNotas[nota]['idEstudiante']
-                            print('Ingrese la nota 2 del estudiante',leerEstudiantes[idEs]['nombre'],'en la materia',leerMaterias[id]['nombre'])
-                            nota2 = float(input())
-                            leerNotas[nota]['nota2'] = nota2
-                        elif leerNotas[nota]['nota1'] == 'p':
-                            idEs = leerNotas[nota]['idEstudiante']
-                            print('Ingrese la nota 1 del estudiante',leerEstudiantes[idEs]['nombre'],'en la materia',leerMaterias[id]['nombre'])
-                            nota1 = float(input())
-                            leerNotas[nota]['nota1'] = nota1
-                json.dump(leerNotas,archivo)                
+                        elif dicNotas[nota]['nota2'] != 'p':
+                            dicNotas = agregarNotas(dicNotas,nota,dicEstu,dicMate,id,'nota3')
+                        elif dicNotas[nota]['nota1'] != 'p':
+                            dicNotas = agregarNotas(dicNotas,nota,dicEstu,dicMate,id,'nota2')
+                        elif dicNotas[nota]['nota1'] == 'p':
+                            dicNotas = agregarNotas(dicNotas,nota,dicEstu,dicMate,id,'nota1')
+                json.dump(dicNotas,archivo)                
             archivo.close()
             input()
         elif menuNota == '3':
@@ -263,22 +251,20 @@ while menu != '0':
             print('*********************EDITAR NOTAS*********************')
             verNotaMateria()
             id = input('\nSeleccione el estudiante del que desea editar las notas ')
-            with open(pathNota,'r') as archivo:
-                leerNotas = json.load(archivo)
-            archivo.close()
-            if leerNotas[id]['notaFinal'] =='p':
+            dicNotas = leerDicNota()
+            if dicNotas[id]['notaFinal'] =='p':
                 print('\nseleccione\n1.Editar nota 1\n2.Editar nota 2\n3.Editar nota 3')
                 editarNota = input()
-                if editarNota == '1' and leerNotas[id]['nota1'] != 'p':
-                    editarNotas(id,leerNotas,'nota1')
-                elif editarNota == '2' and leerNotas[id]['nota2'] != 'p':
-                    editarNotas(id,leerNotas,'nota2')
-                elif editarNota == '3' and leerNotas[id]['nota3'] != 'p':
-                    editarNotas(id,leerNotas,'nota3')
+                if editarNota == '1' and dicNotas[id]['nota1'] != 'p':
+                    editarNotas(id,dicNotas,'nota1')
+                elif editarNota == '2' and dicNotas[id]['nota2'] != 'p':
+                    editarNotas(id,dicNotas,'nota2')
+                elif editarNota == '3' and dicNotas[id]['nota3'] != 'p':
+                    editarNotas(id,dicNotas,'nota3')
                 else:
                     print('No se puede editar la nota no hay registro de la nota')
             else:
-                print('No se pueden editar las notas ya esta registrada la nota finalss')
+                print('No se pueden editar las notas ya esta registrada la nota finales')
             input()
         elif menuNota == '4':
             os.system('clear')
@@ -286,16 +272,14 @@ while menu != '0':
             print('Seleccione\n1.Eliminar registro de notas\n2.Salir')
             op = input()
             if op == '1':
-                with open(pathNota,'r') as archivo:
-                    leerNotas = json.load(archivo)
-                archivo.close()
+                dicNotas = leerDicNota()
                 with open(pathNota,'w') as archivo:
-                    for nota in leerNotas:
-                        leerNotas[nota]['nota1'] = 'p'
-                        leerNotas[nota]['nota2'] = 'p'
-                        leerNotas[nota]['nota3'] = 'p'
-                        leerNotas[nota]['notaFinal'] = 'p'
-                    json.dump(leerNotas,archivo)
+                    for nota in dicNotas:
+                        dicNotas[nota]['nota1'] = 'p'
+                        dicNotas[nota]['nota2'] = 'p'
+                        dicNotas[nota]['nota3'] = 'p'
+                        dicNotas[nota]['notaFinal'] = 'p'
+                    json.dump(dicNotas,archivo)
                 archivo.close()
         else:
             print('Seleccion invalida')
@@ -317,34 +301,25 @@ while menu != '0':
                 nombre = input('Ingrese el nombre ')
                 apellido = input('Ingrese el apellido ')
                 correo = input('Ingrese el correo ')
-                with open(pathEstu,'r') as archivo:
-                    agregarEstudiantes = json.load(archivo)
-                archivo.close()
-                id = generarID(agregarEstudiantes)
+                dicEstu = leerDicEstu()
+                id = generarID(dicEstu)
                 with open(pathEstu,'w') as archivo:
-                    agregarEstudiantes[id]={'nombre': nombre, 'apellido': apellido, 'correo': correo}   
-                    json.dump(agregarEstudiantes,archivo)
+                    dicEstu[id]={'nombre': nombre, 'apellido': apellido, 'correo': correo}   
+                    json.dump(dicEstu,archivo)
                 archivo.close()
-
-                with open(pathEstu,'r') as archivo:
-                    leerEstudiantes = json.load(archivo)
-                archivo.close()
-                with open(pathMate,'r') as archivo:
-                    leerMaterias = json.load(archivo)
-                archivo.close()
-                with open(pathNota,'r') as archivo:
-                    leerNotas = json.load(archivo)
-                archivo.close()
-                idN = int(generarID(leerNotas))
+                
+                dicMate = leerDicMate()
+                dicNotas = leerDicNota()
+                idN = int(generarID(dicNotas))
                 with open(pathNota,'w') as archivo:
-                    for materia in leerMaterias:
+                    for materia in dicMate:
                         cont = 0
-                        for nota in leerNotas:
-                            if leerNotas[nota]['idMateria'] == materia and leerNotas[nota]['nota1'] == 'p' and cont == 0: 
-                                arregloEliminar.append(leerNotas[nota]['idMateria'])
+                        for nota in dicNotas:
+                            if dicNotas[nota]['idMateria'] == materia and dicNotas[nota]['nota1'] == 'p' and cont == 0: 
+                                arregloEliminar.append(dicNotas[nota]['idMateria'])
                                 cont +=1
                     for materia in arregloEliminar:
-                        leerNotas[str(idN)]={
+                        dicNotas[str(idN)]={
                             'idEstudiante':id,
                             'idMateria': materia,
                             'nota1': 'p',
@@ -354,7 +329,7 @@ while menu != '0':
                         }
                         idN += 1
                     arregloEliminar.clear()
-                    json.dump(leerNotas,archivo)
+                    json.dump(dicNotas,archivo)
                 archivo.close()
 
             elif menuEstudiantes == '3':
@@ -378,24 +353,21 @@ while menu != '0':
                 print('*********************ELIMINAR ESTUDIANTES*********************')
                 verEstudiantes()
                 id = input('Ingrese el id del estudiante ')
-
-                with open(pathEstu,'r') as archivo:
-                    eliminarEstudiante = json.load(archivo)
-                archivo.close()
+                
+                dicEstu = leerDicEstu()
                 with open(pathEstu, 'w') as archivo:
-                    del(eliminarEstudiante[id])
-                    json.dump(eliminarEstudiante,archivo)
+                    del(dicEstu[id])
+                    json.dump(dicEstu,archivo)
                 archivo.close()
-                with open(pathNota,'r') as archivo:
-                    eliminarEstudianteNotas = json.load(archivo)
-                archivo.close()
-                for estudiante in eliminarEstudianteNotas:
-                    if eliminarEstudianteNotas[estudiante]['idEstudiante'] == id:
+
+                dicNotas = leerDicNota()
+                for estudiante in dicNotas:
+                    if dicNotas[estudiante]['idEstudiante'] == id:
                         arregloEliminar.append(estudiante)
                 with open(pathNota, 'w') as archivo:
                     for registro in arregloEliminar:
-                        del(eliminarEstudianteNotas[registro])
-                    json.dump(eliminarEstudianteNotas,archivo)
+                        del(dicNotas[registro])
+                    json.dump(dicNotas,archivo)
                 archivo.close()
                 arregloEliminar.clear()
                 input('Eliminacion exitosa')
@@ -422,28 +394,21 @@ while menu != '0':
 
                 nombre = input('\nIngrese el nombre de la materia ')
 
-                with open(pathMate,'r') as archivo:
-                    agregarMaterias = json.load(archivo)
-                archivo.close()
+                dicMate = leerDicMate()
                 with open(pathMate,'w') as archivo:
-                    id = generarID(agregarMaterias)
-                    agregarMaterias[id] = {'nombre' : nombre}
-                    json.dump(agregarMaterias,archivo)
+                    id = generarID(dicMate)
+                    dicMate[id] = {'nombre' : nombre}
+                    json.dump(dicMate,archivo)
                 archivo.close()
-                with open(pathEstu,'r') as archivo:
-                    leerEstudiantes = json.load(archivo)
-                archivo.close()
-                with open(pathMate,'r') as archivo:
-                    leerMaterias = json.load(archivo)
-                archivo.close()
-                with open(pathNota,'r') as archivo:
-                    leerNotas = json.load(archivo)
-                archivo.close()
-                id = int(generarID(leerNotas))
-                idM = int(generarID(leerMaterias)) -1
+
+                dicEstu = leerDicEstu()
+                dicMate = leerDicMate()
+                dicNotas = leerDicNota()
+                id = int(generarID(dicNotas))
+                idM = int(generarID(dicMate)) -1
                 with open(pathNota,'w') as archivo:
-                    for estudiante in leerEstudiantes:
-                        leerNotas[str(id)] = {
+                    for estudiante in dicEstu:
+                        dicNotas[str(id)] = {
                             'idEstudiante':estudiante,
                             'idMateria': str(idM),
                             'nota1': 'p',
@@ -452,7 +417,7 @@ while menu != '0':
                             'notaFinal': 'p'
                         }
                         id += 1
-                    json.dump(leerNotas,archivo)
+                    json.dump(dicNotas,archivo)
                 archivo.close()
                 input()
 
@@ -465,14 +430,12 @@ while menu != '0':
                 id = input('Ingrese el id de la materia que desea editar ')
                 nombre = input('\nIngrese el nombre de la materia ')
 
-                with open(pathMate,'r') as archivo:
-                    editarMaterias = json.load(archivo)
-                archivo.close()
+                dicMate = leerDicMate()
                 with open(pathMate,'w') as archivo:
-                    for materia in editarMaterias:
+                    for materia in dicMate:
                         if materia == id:
-                            editarMaterias[materia]['nombre'] = nombre
-                    json.dump(editarMaterias,archivo)
+                            dicMate[materia]['nombre'] = nombre
+                    json.dump(dicMate,archivo)
                 archivo.close()
                 input()
 
@@ -483,30 +446,26 @@ while menu != '0':
 
                 id = input('Ingrese el id de la materia que desea eliminar ')
 
-                with open(pathNota,'r') as archivo:
-                    notas = json.load(archivo)
-                archivo.close()
+                dicNotas = leerDicNota()
 
-                for nota in notas:
-                    if notas[nota]['idMateria'] == id and notas[nota]['nota1'] != 'p':
+                for nota in dicNotas:
+                    if dicNotas[nota]['idMateria'] == id and dicNotas[nota]['nota1'] != 'p':
                         cont += 1  
 
                 if cont == 0:
-                    with open(pathMate,'r') as archivo:
-                        eliminarMaterias = json.load(archivo)
-                    archivo.close()
-                    for nota in notas:
-                        if notas[nota]['idMateria'] == id :
+                    dicMate = leerDicMate()
+                    for nota in dicNotas:
+                        if dicNotas[nota]['idMateria'] == id :
                             arregloEliminar.append(nota)
                     with open(pathNota,'w') as archivo:
                         for materia in arregloEliminar:
-                            del(notas[materia])
-                        json.dump(notas,archivo)
+                            del(dicNotas[materia])
+                        json.dump(dicNotas,archivo)
                     archivo.close()
                         
                     with open(pathMate,'w') as archivo:
-                        del(eliminarMaterias[id])
-                        json.dump(eliminarMaterias,archivo)
+                        del(dicMate[id])
+                        json.dump(dicMate,archivo)
                     archivo.close()
                     arregloEliminar.clear()
                     input('Eliminacion exitosa')
