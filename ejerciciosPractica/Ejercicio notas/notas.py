@@ -1,7 +1,6 @@
 import json
 import os
 
-cont = 0
 id = 1
 pathEstu = './ejerciciosPractica/Ejercicio notas/json/dicEstudiantes.json'
 pathMate = './ejerciciosPractica/Ejercicio notas/json/dicMaterias.json'
@@ -447,7 +446,7 @@ while menu != '0':
                 id = input('Ingrese el id de la materia que desea eliminar ')
 
                 dicNotas = leerDicNota()
-
+                cont = 0
                 for nota in dicNotas:
                     if dicNotas[nota]['idMateria'] == id and dicNotas[nota]['nota1'] != 'p':
                         cont += 1  
