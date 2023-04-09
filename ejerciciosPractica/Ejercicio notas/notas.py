@@ -5,7 +5,7 @@ id = 1
 pathEstu = './ejerciciosPractica/Ejercicio notas/json/dicEstudiantes.json'
 pathMate = './ejerciciosPractica/Ejercicio notas/json/dicMaterias.json'
 pathNota = './ejerciciosPractica/Ejercicio notas/json/dicNotas.json'
-arregloEliminar = []
+arreglo = []
 dicEstudiante = {
     '1':{
     'nombre': 'Oscar',
@@ -53,7 +53,29 @@ for materia in dicMaterias:
             }
             id +=1
 
-
+def validarInput(arreglo,validar):
+    val = 0
+    for i in arreglo:
+        if i == validar:
+            val = 1
+    if val == 1:
+        return validar
+    else:
+        validar2 = input('Seleccion invalida, intente de nuevo ')
+        return validarInput(arreglo, validar2)
+ 
+def validarInputNum(nota):
+    try:
+        nota = float(nota)
+        if nota >= 0 and nota <= 5:
+            return nota
+        else:
+            print('\nDigite solo numeros entre 0 y 5 ')
+            nota3 = input('Ingrese la nota ')
+            return validarInputNum(nota3)
+    except ValueError:
+        nota2 = input('\nIngrese solo numeros ')
+        return validarInputNum(nota2)
 
 def leerDicEstu():
     with open(pathEstu,'r') as archivo:
@@ -88,10 +110,13 @@ def generarID(diccionario):
     return id
 
 def verMaterias():
+    arreglo = []
     dicMate = leerDicMate()
     print('CODIG0\t\t MATERIA')
     for materia in dicMate:
+        arreglo.append(materia)
         print(materia,'\t\t',dicMate[materia]['nombre'])
+    return arreglo
 
 def verMenuEstudiantes():
     os.system('clear')
@@ -99,10 +124,13 @@ def verMenuEstudiantes():
     print('Seleccione:\n1.Ver estudiantes\n2.Agregar\n3.Editar\n4.Eliminar\n0.Salir')
 
 def verEstudiantes():
+    arreglo = []
     dicEstu = leerDicEstu()
     print('CODIGO\t\t NOMBRE\t\t APELLIDO\t\t CORREO')
     for estudiante in dicEstu:
+        arreglo.append(estudiante)
         print(estudiante,'\t\t',dicEstu[estudiante]['nombre'],'\t\t',dicEstu[estudiante]['apellido'],'\t\t',dicEstu[estudiante]['correo'])
+    return arreglo
 
 def menuEditarEstudiante():
     os.system('clear')
@@ -111,8 +139,9 @@ def menuEditarEstudiante():
 
 def editarEstudiantes(itemCambio):
     os.system('clear')
-    verEstudiantes()
+    arreglo = verEstudiantes()
     id = input('Ingrese el id del estudiante ')
+    id = validarInput(arreglo,id)
     print('Ingrese el nuevo',itemCambio)
     nuevoValor = input()
     dicEstu = leerDicEstu()
@@ -125,12 +154,14 @@ def editarEstudiantes(itemCambio):
 def menuNotas():
     os.system('clear')
     print('*********************NOTAS*********************')
-    print('Seleccione\n1.Ver notas\n2.Agregar notas\n3.Editar notas\n4.Eliminar nota\n5.Salir')
+    print('Seleccione\n1.Ver notas\n2.Agregar notas\n3.Editar notas\n4.Eliminar nota\n0.Salir')
 
 def verNotaMateria():
+    arreglo = []
     os.system('clear')
-    verMaterias()
+    arreglo = verMaterias()
     id = input('Ingrese el codigo de la materia ')
+    id = validarInput(arreglo,id)
     os.system('clear')
     dicMate = leerDicMate()
     dicEstu = leerDicEstu()
@@ -140,13 +171,16 @@ def verNotaMateria():
     print('CODIGO\t\t NOMBRE\t\t NOTA 1\t\t NOTA 2\t\t NOTA 3\t\t NOTA FINAL\t\t')
     for nota in dicNota:
         if dicNota[nota]['idMateria'] == id:
+            arreglo.append(nota)
             idEs = dicNota[nota]['idEstudiante']
             print(nota,'\t\t',dicEstu[idEs]['nombre'],'\t\t',dicNota[nota]['nota1'],'\t\t',dicNota[nota]['nota2'],'\t\t',dicNota[nota]['nota3'],'\t\t',dicNota[nota]['notaFinal'])
+    return arreglo
 
 def verNotaEstu():
     os.system('clear')
-    verEstudiantes()
+    arreglo = verEstudiantes()
     id = input('Ingrese el codigo del estudiante ')
+    id = validarInput(arreglo,id)
     os.system('clear')
     dicMate = leerDicMate()
     dicEstu = leerDicEstu()
@@ -160,7 +194,8 @@ def verNotaEstu():
             print(nota,'\t\t',dicMate[idMa]['nombre'],'\t\t',dicNotas[nota]['nota1'],'\t\t',dicNotas[nota]['nota2'],'\t\t',dicNotas[nota]['nota3'],'\t\t',dicNotas[nota]['notaFinal'])
 
 def editarNotas(id,leerNotas,nota):
-    n = float(input('Ingrese la nota '))
+    n = input('Ingrese la nota ')
+    n = validarInputNum(n)
     with open(pathNota,'w') as archivo:
         leerNotas[id][nota] = n
         json.dump(leerNotas,archivo)
@@ -169,9 +204,14 @@ def editarNotas(id,leerNotas,nota):
 def agregarNotas(dicNotas,nota,dicEstu,dicMate,id,notatext):
     idEs = dicNotas[nota]['idEstudiante']
     print('Ingrese la', notatext, ' del estudiante',dicEstu[idEs]['nombre'],'en la materia',dicMate[id]['nombre'])
-    nota3 = float(input())
-    dicNotas[nota][notatext] = nota3
+    notaNueva = input()
+    notaNueva=validarInputNum(notaNueva)
+    dicNotas[nota][notatext] = notaNueva
     return dicNotas
+
+
+
+
 
 try:
     leerDicEstu()
@@ -218,8 +258,9 @@ while menu != '0':
         elif menuNota == '2':
             os.system('clear')
             print('*********************AGREGAR NOTAS*********************')
-            verMaterias()
+            arreglo = verMaterias()
             id = input('Seleccione la materia ')
+            id = validarInput(arreglo,id)
             dicNotas = leerDicNota()
             dicMate = leerDicMate()
             dicEstu = leerDicEstu()           
@@ -248,9 +289,12 @@ while menu != '0':
         elif menuNota == '3':
             os.system('clear')
             print('*********************EDITAR NOTAS*********************')
-            verNotaMateria()
+            arreglo = verNotaMateria()
             id = input('\nSeleccione el estudiante del que desea editar las notas ')
+            id = validarInput(arreglo,id)
+            arreglo.clear()
             dicNotas = leerDicNota()
+
             if dicNotas[id]['notaFinal'] =='p':
                 print('\nseleccione\n1.Editar nota 1\n2.Editar nota 2\n3.Editar nota 3')
                 editarNota = input()
@@ -315,9 +359,9 @@ while menu != '0':
                         cont = 0
                         for nota in dicNotas:
                             if dicNotas[nota]['idMateria'] == materia and dicNotas[nota]['nota1'] == 'p' and cont == 0: 
-                                arregloEliminar.append(dicNotas[nota]['idMateria'])
+                                arreglo.append(dicNotas[nota]['idMateria'])
                                 cont +=1
-                    for materia in arregloEliminar:
+                    for materia in arreglo:
                         dicNotas[str(idN)]={
                             'idEstudiante':id,
                             'idMateria': materia,
@@ -327,7 +371,7 @@ while menu != '0':
                             'notaFinal': 'p'
                         }
                         idN += 1
-                    arregloEliminar.clear()
+                    arreglo.clear()
                     json.dump(dicNotas,archivo)
                 archivo.close()
 
@@ -350,8 +394,10 @@ while menu != '0':
             elif menuEstudiantes == '4':
                 os.system('clear')
                 print('*********************ELIMINAR ESTUDIANTES*********************')
-                verEstudiantes()
+                arreglo = verEstudiantes()
                 id = input('Ingrese el id del estudiante ')
+                id = validarInput(arreglo,id)
+                arreglo.clear()
                 
                 dicEstu = leerDicEstu()
                 with open(pathEstu, 'w') as archivo:
@@ -362,13 +408,13 @@ while menu != '0':
                 dicNotas = leerDicNota()
                 for estudiante in dicNotas:
                     if dicNotas[estudiante]['idEstudiante'] == id:
-                        arregloEliminar.append(estudiante)
+                        arreglo.append(estudiante)
                 with open(pathNota, 'w') as archivo:
-                    for registro in arregloEliminar:
+                    for registro in arreglo:
                         del(dicNotas[registro])
                     json.dump(dicNotas,archivo)
                 archivo.close()
-                arregloEliminar.clear()
+                arreglo.clear()
                 input('Eliminacion exitosa')
             else:
                 print('Seleccion invalida')
@@ -424,9 +470,11 @@ while menu != '0':
             elif menuMaterias == '3':
                 os.system('clear')
                 print('*********************EDITAR MATERIA*********************')
-                verMaterias()
+                arreglo = verMaterias()
 
                 id = input('Ingrese el id de la materia que desea editar ')
+                id = validarInput(arreglo,id)
+                arreglo.clear()
                 nombre = input('\nIngrese el nombre de la materia ')
 
                 dicMate = leerDicMate()
@@ -441,10 +489,10 @@ while menu != '0':
             elif menuMaterias == '4':
                 os.system('clear')
                 print('*********************ELIMINAR MATERIA*********************')
-                verMaterias()
-
+                arreglo = verMaterias()
                 id = input('Ingrese el id de la materia que desea eliminar ')
-
+                id = validarInput(arreglo,id)
+                arreglo.clear()
                 dicNotas = leerDicNota()
                 cont = 0
                 for nota in dicNotas:
@@ -455,9 +503,9 @@ while menu != '0':
                     dicMate = leerDicMate()
                     for nota in dicNotas:
                         if dicNotas[nota]['idMateria'] == id :
-                            arregloEliminar.append(nota)
+                            arreglo.append(nota)
                     with open(pathNota,'w') as archivo:
-                        for materia in arregloEliminar:
+                        for materia in arreglo:
                             del(dicNotas[materia])
                         json.dump(dicNotas,archivo)
                     archivo.close()
@@ -466,7 +514,7 @@ while menu != '0':
                         del(dicMate[id])
                         json.dump(dicMate,archivo)
                     archivo.close()
-                    arregloEliminar.clear()
+                    arreglo.clear()
                     input('Eliminacion exitosa')
                 else:
                     input('Esta materia no se puede eliminar, ya tiene notas registradas')
