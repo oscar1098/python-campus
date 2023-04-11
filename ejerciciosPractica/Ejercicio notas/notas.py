@@ -261,6 +261,7 @@ while menu != '0':
             arreglo = verMaterias()
             id = input('Seleccione la materia ')
             id = validarInput(arreglo,id)
+            arreglo.clear()
             dicNotas = leerDicNota()
             dicMate = leerDicMate()
             dicEstu = leerDicEstu()           
