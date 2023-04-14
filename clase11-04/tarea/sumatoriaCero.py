@@ -5,4 +5,4 @@ while n != 0:
     sum +=n
     n = int(input('Ingrese un numero '))
     
-print(sum)
+print('La sumatoria es ',sum)
