@@ -1,10 +1,10 @@
 import json
 import os
 
-rutaBasico = './clase12-04/json/dicBasico.json'
-rutaIntermedio = './clase12-04/json/dicIntermedio.json'
-rutaAvanzado = './clase12-04/json/dicAvanzado.json'
-rutaTrainer = './clase12-04/json/trainers.json'
+rutaBasico = './clase13-04/json/dicBasico.json'
+rutaIntermedio = './clase13-04/json/dicIntermedio.json'
+rutaAvanzado = './clase13-04/json/dicAvanzado.json'
+rutaTrainer = './clase13-04/json/trainers.json'
 menuGeneral = 0
 arregloTrainer = ['','','']
 
@@ -67,7 +67,7 @@ def registrarCampers(team,id,diccionario,numero,ruta):
 def registrarTrainer():
     os.system('clear')
     print('*********************REGISTRAR EXPERT TRAINER*********************')
-    print('\nSeleccione:\n1.Expert trainer grupo basico\n2.Expert trainer grupo basico\n2.Expert trainer grupo basico')
+    print('\nSeleccione:\n1.Expert trainer grupo basico\n2.Expert trainer grupo intermedio\n3.Expert trainer grupo avanzado')
     trainer = input()
     return trainer
 
@@ -105,6 +105,11 @@ try :
     leerJson(rutaAvanzado)
 except FileNotFoundError:
     actualizarJson(rutaAvanzado)
+
+try:
+    leerJson(rutaTrainer)
+except FileExistsError:
+    actualizarJson(rutaTrainer,arregloTrainer)
     
 menuGeneral = menu() 
 
@@ -130,17 +135,20 @@ while menuGeneral != '5':
                         print('Seleccion Invalida')
                 menuRegisCampers = menuRegistrarCampers()
         case '2':
-            trainer = registrarTrainer()
-            match trainer:
-                case '1': 
+            trainerMenu = registrarTrainer()
+            match trainerMenu:
+                case '1':
+                    arregloTrainer = leerJson(rutaTrainer) 
                     trainerBasico = input('Ingrese el nombre del trainer Basico ')
                     arregloTrainer[0] = trainerBasico
                     actualizarJson(rutaTrainer,arregloTrainer)
                 case '2': 
+                    arregloTrainer = leerJson(rutaTrainer)
                     trainerIntermedio = input('Ingrese el nombre del trainer Intermedio ')
-                    arregloTrainer[1] = trainerBasico
+                    arregloTrainer[1] = trainerIntermedio
                     actualizarJson(rutaTrainer,arregloTrainer)
                 case '3': 
+                    arregloTrainer = leerJson(rutaTrainer)
                     trainerAvanzado = input('Ingrese el nombre del trainer avanzado ')
                     arregloTrainer[2] = trainerAvanzado
                     actualizarJson(rutaTrainer,arregloTrainer)
@@ -153,19 +161,16 @@ while menuGeneral != '5':
                 case '1':
                     diccionario = leerJson(rutaBasico)
                     trainer = leerJson(rutaTrainer)
-                    i = 0
                     mostrarEstudiante(diccionario,trainer,0)
                     input()
                 case '2':
                     diccionario = leerJson(rutaIntermedio)
                     trainer = leerJson(rutaTrainer)
-                    i = 0
                     mostrarEstudiante(diccionario,trainer,1)
                     input()
-                case '1':
+                case '3':
                     diccionario = leerJson(rutaAvanzado)
                     trainer = leerJson(rutaTrainer)
-                    i = 0
                     mostrarEstudiante(diccionario,trainer,2)
                     input()
 
@@ -179,7 +184,7 @@ while menuGeneral != '5':
                     edades = mayorEdadMenorEdad(diccionarioBasico)
                     os.system('clear')
                     print('Estudiante de mayor edad ',edades[0][1],'con ',edades[0][0],' años')
-                    print('Estudiante de menor edad ',edades[1][0],'con ',edades[1][1],' años')
+                    print('Estudiante de menor edad ',edades[1][1],'con ',edades[1][0],' años')
                     input()
                 case '2':
                     diccionarioIntermedio = leerJson(rutaIntermedio)
