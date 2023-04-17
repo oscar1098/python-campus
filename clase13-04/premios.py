@@ -142,6 +142,8 @@ while menuGeneral != '5':
                     registrarTrainer(1,rutaTrainer)
                 case '3': 
                     registrarTrainer(2,rutaTrainer)
+                case other:
+                    print('Seleccion invalida')
         case '3':
             os.system('clear')
             print('*********************LISTAR CAMPERS*********************')
@@ -153,6 +155,8 @@ while menuGeneral != '5':
                     mostrarEstudiante(rutaIntermedio,rutaTrainer,1)
                 case '3':
                     mostrarEstudiante(rutaAvanzado,rutaTrainer,2)
+                case other:
+                    print('Seleccion invalida')
         case '4':
             os.system('clear')
             print('*********************MOSTRAR CAMPERS DE MAYOR Y MENOR EDAD*********************')
@@ -164,10 +168,8 @@ while menuGeneral != '5':
                     mostrarEdades(rutaIntermedio)
                 case '3':
                     mostrarEdades(rutaAvanzado)
+                case other:
+                    print('Seleccion invalida')
         case other:
             print('Opcion invalida')
     menuGeneral = menu()
-
-
-
-
