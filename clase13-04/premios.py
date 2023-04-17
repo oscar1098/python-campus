@@ -46,18 +46,15 @@ def menuRegistrarCampers():
     
 def registrarCampers(team,ruta):
     os.system('clear')
-    print('Cuantos estudiantes desea agregar al grupo\n')
-    totalGrupo = int(input())
-
+    totalGrupo = int(input('Cuantos estudiantes desea agregar al grupo\n'))
     diccionario = leerJson(ruta)
-    id = generearId(diccionario)
 
     for i in range(totalGrupo):
+        id = generearId(diccionario)
         nombre = input('\nIngrese el nombre ')
         mesIngreso = input('Ingrese la fecha (Ejempo: Enero) ')
         edad = input('Ingrese la edad ')
         diccionario[id]={'nombre' : nombre,'mesIngreso' : mesIngreso,'grupo' : team,'edad' : edad}
-        id +=1
     actualizarJson(ruta,diccionario)
 
 def menuRegistrarTrainer():
