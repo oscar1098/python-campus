@@ -60,7 +60,7 @@ def registrarCampers(team,ruta):
         id +=1
     actualizarJson(ruta,diccionario)
 
-def menuregistrarTrainer():
+def menuRegistrarTrainer():
     os.system('clear')
     print('*********************REGISTRAR EXPERT TRAINER*********************')
     trainer = input('\nSeleccione:\n1.Expert trainer grupo basico\n2.Expert trainer grupo intermedio\n3.Expert trainer grupo avanzado\n')
@@ -134,7 +134,7 @@ while menuGeneral != '5':
                         print('Seleccion Invalida')
                 menuRegisCampers = menuRegistrarCampers()
         case '2':
-            trainerMenu = menuregistrarTrainer()
+            trainerMenu = menuRegistrarTrainer()
             match trainerMenu:
                 case '1':
                     registrarTrainer(0,rutaTrainer)
