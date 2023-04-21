@@ -3,6 +3,7 @@ import os
 2. Escribir un programa para gestionar un listado telefónico con los nombres y los teléfonos de los clientes de una empresa.
 El programa debe incorporar funciones para: 1. crear el archivo si este no existe, 2. para consultar el teléfono de un cliente, 3. añadir el teléfono de un nuevo cliente y 4. eliminar el teléfono de un cliente. El listado debe estar guardado en el archivo de texto Directorio.txt donde el nombre del cliente y su teléfono deben aparecer separados por comas y cada cliente en una línea distinta.
 '''
+
 ruta = './clase 19-04/ejercicio2/txt/numeros.txt'
    
 def escribir(texto,ruta):
@@ -27,7 +28,7 @@ except FileNotFoundError:
 
 menu = input('Seleccione\n1.Consultar el telefono de un cliente\n2.Añadir telefono de un nuevo cliente\n3.Eliminar un cliente\n5.Salir\n')
 
-while menu != '5':
+while menu != '4':
     match menu:
         case '1':
             os.system('clear')
@@ -50,6 +51,7 @@ while menu != '5':
             linea = '\n' + nombre +' '+ telefono 
             agregar(linea,ruta)
         case '3':
+            texto = ''
             os.system('clear')
             lineas = leer(ruta)
             i = len(lineas)
@@ -68,16 +70,19 @@ while menu != '5':
             
             lineas.pop(j)
 
-            print(lineas)
-            
+        
 
-            print(j)
+            for palabra in range(len(lineas)):
+                eliminar =  lineas[palabra].split()[0]
+                texto += lineas[palabra].split()[0] + ' ' + lineas[palabra].split()[1] + '\n'
+
+            escribir(texto,ruta)
             input()
 
 
 
     os.system('clear')
-    menu = input('Seleccione\n1.Consultar el telefono de un cliente\n2.Añadir telefono de un nuevo cliente\n4.Eliminar un cliente\n5.Salir\n')
+    menu = input('Seleccione\n1.Consultar el telefono de un cliente\n2.Añadir telefono de un nuevo cliente\n3.Eliminar un cliente\n4.Salir\n')
 
 
             
