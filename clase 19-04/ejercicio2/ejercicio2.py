@@ -70,16 +70,14 @@ while menu != '4':
             
             lineas.pop(j)
 
-        
-
             for palabra in range(len(lineas)):
                 eliminar =  lineas[palabra].split()[0]
                 texto += lineas[palabra].split()[0] + ' ' + lineas[palabra].split()[1] + '\n'
 
+            print(texto)
+
             escribir(texto,ruta)
             input()
-
-
 
     os.system('clear')
     menu = input('Seleccione\n1.Consultar el telefono de un cliente\n2.Añadir telefono de un nuevo cliente\n3.Eliminar un cliente\n4.Salir\n')
