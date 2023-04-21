@@ -50,11 +50,10 @@ while menu != '5':
                 'documento': documento
             }
 
-            print(dicc)
             empresa['personas'].append(dicc)
 
             escribir(ruta,empresa)
-            input()
+        case '2':
 
 
     
