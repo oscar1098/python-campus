@@ -54,6 +54,7 @@ while menu != '5':
 
             escribir(ruta,empresa)
         case '2':
+            print('Mostrar')
 
 
     
