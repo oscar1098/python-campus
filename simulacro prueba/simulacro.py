@@ -3,60 +3,7 @@ import os
 
 ruta = './simulacro prueba/json/biblioteca.json'
 
-biblioteca = {
-    "bookstore": {
-        "book": [
-            {
-                "title": {
-                    "_lang": "en",
-                    "__text": "Everyday Italian"
-                },
-                "author": "Giada De Laurentiis",
-                "year": "2005",
-                "price": "30.00",
-                "_category": "COOKING"
-            },
-            {
-                "title": {
-                    "_lang": "en",
-                    "__text": "Harry Potter"
-                },
-                "author": "J K. Rowling",
-                "year": "2005",
-                "price": "29.99",
-                "_category": "CHILDREN"
-            },
-            {
-                "title": {
-                    "_lang": "en",
-                    "__text": "XQuery Kick Start"
-                },
-                "author": [
-                    "James McGovern",
-                    "Per Bothner",
-                    "Kurt Cagle",
-                    "James Linn",
-                    "Vaidyanathan Nagarajan"
-                ],
-                "year": "2003",
-                "price": "49.99",
-                "_category": "WEB"
-            },
-            {
-                "title": {
-                    "_lang": "en",
-                    "__text": "Learning XML"
-                },
-                "author": "Erik T. Ray",
-                "year": "2003",
-                "price": "39.95",
-                "_category": "WEB"
-            }
-        ]
-    }
-}
-
-def crearJson(dato = biblioteca):
+def crearJson(dato):
     with open(ruta, 'w') as archivo:
         json.dump(dato,archivo)
     archivo.close()
@@ -87,11 +34,6 @@ def mostrarBiblioteca(biblioteca,cantidad):
 
         print(libro,'\t\t',autor)
 
-try:
-    leerJson()
-except FileNotFoundError:
-    crearJson()
-
 menu = menuGeneral()
 
 while menu != '6':
@@ -120,7 +62,7 @@ while menu != '6':
                 autor = []
                 numAutor = int(input('Ingrese el numero de autores '))
                 for i in range(numAutor):
-                    autores = input('\nIngrese el nombre del autor')
+                    autores = input('\nIngrese el nombre del autor: ')
                     autor.append(autores)
 
             dicc = { "title": {"_lang": idioma, "__text": titulo}, "author": autor, "year": año, "price": precio, "_category": categoria }
@@ -181,12 +123,12 @@ while menu != '6':
                     numAutor = input('\nSeleccione:\n1.Para un autor\n2.Varios autores\n')
 
                     if numAutor == '1':
-                        biblioteca["bookstore"]["book"][i]["author"] = input('Ingrese el nombre del valor')
+                        biblioteca["bookstore"]["book"][i]["author"] = input('Ingrese el nombre del autor ')
                     else:
                         autor = []
                         numAutor = int(input('\nIngrese el numero de autores '))
                         
-                        for i in range(numAutor):
+                        for j in range(numAutor):
                             autores = input('\nIngrese el nombre del autor ')
                             autor.append(autores)
 
@@ -213,19 +155,3 @@ while menu != '6':
         case other:
             print('Seleccion invalida')
     menu = menuGeneral()
-
-
-
-
-                    
-
-
-                            
-
-
-
-            
-
-            
-        # {"title": {"_lang": "en", "__text": "Everyday Italian"}, "author": "Giada De Laurentiis", "year": "2005", "price": "30.00", "_category": "COOKING"}
-
