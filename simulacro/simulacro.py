@@ -96,7 +96,7 @@ while menuGene != '6':
 
             input('\nSe agrego correctamente precione enter para continuar')
         case '3':
-            titulosMenu('INFORMACION POR TITULO')
+            titulosMenu('INFORMACION POR LIBRO')
             biblioteca = leerJson()
             mostrarLibros(biblioteca)
             arregloLibro = biblioteca["bookstore"]["book"]
