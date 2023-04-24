@@ -105,7 +105,7 @@ while menuGene != '6':
 
             for libro in arregloLibro:
                 if libro["title"]["__text"] == titulo:
-                    titulosMenu('INFORMACION POR TITULO')
+                    titulosMenu('INFORMACION POR LIBRO')
                     titulo = ['TITULO:',libro["title"]["__text"]]
                     arregloImprimir.append(titulo)
                     titulo = ['LENGUAJE:',libro["title"]["_lang"]]
@@ -116,7 +116,7 @@ while menuGene != '6':
                     arregloImprimir.append(titulo)
                     titulo = ['PRECIO:',libro["price"]]
                     arregloImprimir.append(titulo)
-                    titulo = ['ATEGORIA:',libro["_category"]]
+                    titulo = ['CATEGORIA:',libro["_category"]]
                     arregloImprimir.append(titulo)
             print(tabulate(arregloImprimir))
             input('\nPresione enter para continuar')
