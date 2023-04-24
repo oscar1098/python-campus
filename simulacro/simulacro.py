@@ -1,3 +1,4 @@
+from tabulate import tabulate
 import json
 import os
 
@@ -51,14 +52,16 @@ def crearAutor():
     return autor
 
 def mostrarLibros(biblioteca):
-    print('TITULO\t\t\tAUTOR\n')
     arregloLibro = biblioteca["bookstore"]["book"]
+    arregloImprimir = []
     
     for libro in arregloLibro:
         titulo = libro["title"]["__text"]
         autor = validarAutores(libro)
+        imprimir = [titulo,autor]
+        arregloImprimir.append(imprimir)
         
-        print(titulo,'\t\t',autor)
+    print(tabulate(arregloImprimir,headers=['TITULO','AUTOR']))
 
 def menuEditar():
     limpiarPantalla()
@@ -98,17 +101,24 @@ while menuGene != '6':
             mostrarLibros(biblioteca)
             arregloLibro = biblioteca["bookstore"]["book"]
             titulo = input('\n\nIngrese el nombre del titulo: ')
+            arregloImprimir= []
 
             for libro in arregloLibro:
                 if libro["title"]["__text"] == titulo:
                     titulosMenu('INFORMACION POR TITULO')
-                    print(f'TITULO: {libro["title"]["__text"]}')
-                    print(f'LENGUAJE: {libro["title"]["_lang"]}')
-                    print(f'AUTOR O AUOTORES: {validarAutores(libro)}')
-                    print(f'AÑO: {libro["year"]}')
-                    print(f'PRECIO: {libro["price"]}')
-                    print(f'CATEGORIA: {libro["_category"]}')
-
+                    titulo = ['TITULO:',libro["title"]["__text"]]
+                    arregloImprimir.append(titulo)
+                    titulo = ['LENGUAJE:',libro["title"]["_lang"]]
+                    arregloImprimir.append(titulo)
+                    titulo = ['AUTOR O AUOTORES:',validarAutores(libro)]
+                    arregloImprimir.append(titulo)
+                    titulo = ['AÑO:',libro["year"]]
+                    arregloImprimir.append(titulo)
+                    titulo = ['PRECIO:',libro["price"]]
+                    arregloImprimir.append(titulo)
+                    titulo = ['ATEGORIA:',libro["_category"]]
+                    arregloImprimir.append(titulo)
+            print(tabulate(arregloImprimir))
             input('\nPresione enter para continuar')
         
         case '4':
